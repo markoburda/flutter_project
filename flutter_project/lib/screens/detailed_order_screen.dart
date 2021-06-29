@@ -51,7 +51,7 @@ class OrderDetails {
     }
     else{
       return OrderDetails(
-        origin_country: json["data"]["tracking"]["origin_country_iso3"],
+        origin_country: "None",
         tracking_number: "None",
         slug: "None",
         // delivery_date: "None",
@@ -80,8 +80,6 @@ class _DetailedOrderState extends State<DetailedOrder> {
   @override
   Widget build(BuildContext context) {
     final order = ModalRoute.of(context)?.settings.arguments as Map;
-
-      // appBar: AppBar(title: Text("${order['item_name']}")),
     return DefaultTextStyle(
     style: Theme.of(context).textTheme.headline2!,
     textAlign: TextAlign.center,
@@ -189,9 +187,21 @@ class _DetailedOrderState extends State<DetailedOrder> {
 
                         ];
           if (snapshot.hasData) {
-                return Text(snapshot.data!.origin_country);
+                return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: children,
+            ),
+          );
               } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
+                return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: children,
+            ),
+          );
               }
 
               // By default, show a loading spinner.

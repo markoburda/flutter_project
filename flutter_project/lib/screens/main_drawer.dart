@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/add_order_screen.dart';
 import 'package:flutter_project/screens/my_orders.dart';
-import 'package:flutter_project/screens/profile_screen.dart';
 import 'package:flutter_project/widgets/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,17 +57,6 @@ class MainDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.person),
-            title: Text(
-              'My Profile',
-              style: TextStyle(fontSize: 20),
-            ),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushNamed(ProfileScreen.routeName);
-            },
-          ),
-          ListTile(
             leading: Icon(Icons.logout),
             title: Text(
               'Logout',
@@ -76,6 +64,7 @@ class MainDrawer extends StatelessWidget {
             ),
             onTap: () {
               context.read<AuthenticationService>().signOut();
+              Navigator.of(context).pop();
             },
           )
         ],

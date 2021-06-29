@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter_project/constants.dart';
 import 'package:flutter_project/screens/add_order_screen.dart';
+import 'package:flutter_project/screens/detailed_order_screen.dart';
 import 'package:flutter_project/screens/my_orders.dart';
-import 'package:flutter_project/screens/profile_screen.dart';
 import 'package:flutter_project/widgets/auth_service.dart';
 import 'package:flutter_project/widgets/auth_wrapper.dart';
 
@@ -37,9 +37,9 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           routes: {
             '/signup': (context) => SignUpScreen(),
-            '/profile': (context) => ProfileScreen(),
             '/myorders': (context) => MyOrders(),
-            '/addorder': (context) => AddOrder()
+            '/addorder': (context) => AddOrder(),
+            '/order': (context) => DetailedOrder()
           },
           debugShowCheckedModeBanner: false,
           title: 'Delivery io',

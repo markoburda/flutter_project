@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_project/components/input_field.dart';
 import 'package:flutter_project/components/login_button.dart';
-import 'package:flutter_project/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,7 +17,6 @@ class AddOrder extends StatefulWidget {
 class _AddOrderState extends State<AddOrder> {
   List orders = [];
   String item_name = "";
-  String status = "";
   String carrier = "";
   String imageUrl = "";
   String tracknum = "";
@@ -25,6 +25,7 @@ class _AddOrderState extends State<AddOrder> {
     DocumentReference documentReference =
         FirebaseFirestore.instance.collection("Orders").doc(item_name);
     Map<String, String?> orders = {
+      "user_id": context.read<User?>()?.uid,
       "item_name": item_name,
       "status": null,
       "carrier": carrier,

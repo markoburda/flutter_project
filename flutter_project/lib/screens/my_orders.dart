@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_project/components/input_field.dart';
-import 'package:flutter_project/screens/home_screen.dart';
+import 'package:flutter_project/screens/main_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,45 +15,27 @@ class MyOrders extends StatefulWidget {
 }
 
 class _MyOrdersState extends State<MyOrders> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   orders.add(Order('Headphones', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  //   orders.add(Order('Headphones2', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  //   orders.add(Order('Headphones3', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  //   orders.add(Order('Headphones', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  //   orders.add(Order('Headphones2', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  //   orders.add(Order('Headphones3', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  //   orders.add(Order('Headphones', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  //   orders.add(Order('Headphones2', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  //   orders.add(Order('Headphones3', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  //   orders.add(Order('Headphones', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  //   orders.add(Order('Headphones2', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  //   orders.add(Order('Headphones3', 'Aftership', 'OK',
-  //       'https://www.mytrendyphone.eu/images/Forever-Music-Soul-BHS-300-Bluetooth-Headphones-with-Microphone-Black-5900495738110-17072019-01-p.jpg'));
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: MainDrawer(),
         appBar: AppBar(title: Text("My Orders")),
         body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection("Orders").snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection("Orders")
+              .where("user_id", isEqualTo: context.read<User?>()?.uid)
+              .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             return ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
-                  return Dismissible(
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/order', arguments: {
+                        'item_name': snapshot.data?.docs[index]['item_name'],
+                        'imageUrl': snapshot.data?.docs[index]['imageUrl'],
+                        'tracknum': snapshot.data?.docs[index]['tracknum']
+                      });
+                    },
                     key: Key(snapshot.data?.docs[index]['item_name']),
                     child: Card(
                       child: Container(
@@ -85,8 +69,7 @@ class _MyOrdersState extends State<MyOrders> {
                                             fontSize: 18),
                                       ),
                                       Text(
-                                        snapshot.data?.docs[index]['status'] ??
-                                            'null',
+                                        'STATUS',
                                       )
                                     ],
                                   )
@@ -101,9 +84,4 @@ class _MyOrdersState extends State<MyOrders> {
           },
         ));
   }
-}
-
-class Order {
-  final String itemName, status, carrier, imageUrl;
-  Order(this.itemName, this.carrier, this.status, this.imageUrl);
 }

@@ -13,6 +13,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final myController = TextEditingController();
     Size size = MediaQuery.of(context).size;
     return Background(
       child: SingleChildScrollView(
@@ -28,9 +29,11 @@ class Body extends StatelessWidget {
             InputField(
               hintText: "Your Email",
               onChanged: (value) {},
+              controller: myController,
             ),
             PasswordField(
               onChanged: (value) {},
+              controller: myController,
             ),
             LoginButton(
               text: "LOGIN",

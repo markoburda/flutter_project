@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/screens/orders-screen.dart';
 import 'package:flutter_project/screens/profile_screen.dart';
 import 'package:flutter_project/widgets/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +40,15 @@ class MainDrawer extends StatelessWidget {
               'My orders',
               style: TextStyle(fontSize: 20),
             ),
-            onTap: null,
+            onTap: () {
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return OrderScreen();
+                    },
+                  ));
+          }
           ),
           ListTile(
             leading: Icon(Icons.add),
@@ -47,7 +56,10 @@ class MainDrawer extends StatelessWidget {
               'Add order',
               style: TextStyle(fontSize: 20),
             ),
-            onTap: null,
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed(ProfileScreen.routeName);
+            },
           ),
           ListTile(
             leading: Icon(Icons.person),

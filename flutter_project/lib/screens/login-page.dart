@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/components/input_field.dart';
 import 'package:flutter_project/components/password_field.dart';
-import 'package:flutter_project/components/login_button.dart';
+import 'package:flutter_project/components/login-button.dart';
+import 'package:flutter_project/screens/sign_up_screen.dart';
 import 'package:flutter_project/widgets/auth_service.dart';
 import 'package:provider/provider.dart';
 
@@ -38,6 +39,13 @@ class LoginScreen extends StatelessWidget {
                 context.read<AuthenticationService>().signIn(
                     email: emailController.text.trim(),
                     password: passwordController.text.trim());
+              },
+            ),
+            InkWell(
+              child: Text('Sign up'),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed(SignUpScreen.routename);
               },
             )
           ]),

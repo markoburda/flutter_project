@@ -15,7 +15,7 @@ class _OrderScreenState extends State<OrderScreen> {
   void initState() {
     super.initState();
     futureAlbum = fetchAlbum(client);
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,8 @@ class _OrderScreenState extends State<OrderScreen> {
               // ),
               Padding(
                 padding: const EdgeInsets.only(top: 16),
-                child: Text('Result: ${snapshot.data!.data}', style: TextStyle(color: Colors.amber)),
+                child: Text('Result: ${snapshot.data!.data}',
+                    style: TextStyle(color: Colors.amber)),
               )
             ];
           } else if (snapshot.hasError) {
@@ -81,7 +82,8 @@ Future<Album> fetchAlbum(http.Client client) async {
     Uri.parse('https://api.aftership.com/v4/trackings?page=1&limit=100'),
     // Send authorization headers to the backend.
     headers: {
-      HttpHeaders.authorizationHeader: 'aftership-api-key:  a6d6bd00-ab18-4cb0-9283-69857ae60b97',
+      HttpHeaders.authorizationHeader:
+          'aftership-api-key:  a6d6bd00-ab18-4cb0-9283-69857ae60b97',
       HttpHeaders.contentTypeHeader: 'Content-Type: application/json'
     },
   );
@@ -98,9 +100,7 @@ class Album {
   });
 
   factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      data: json["meta"]["type"]
-    );
+    return Album(data: json["meta"]["type"]);
   }
 }
 
@@ -117,7 +117,7 @@ class UserAgentClient extends http.BaseClient {
 }
 
 class OrderScreen extends StatefulWidget {
-  static const routeName = '/profile';
+  static const routeName = '/myorders';
 
   const OrderScreen({Key? key}) : super(key: key);
 

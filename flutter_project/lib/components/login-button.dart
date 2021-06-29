@@ -21,15 +21,17 @@ class LoginButton extends StatelessWidget {
       width: size.width * 0.8,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(29),
-        child: 
-        TextButton(
-            style: TextButton.styleFrom(
-              textStyle: TextStyle(fontSize: 20, color: textColor, fontWeight: FontWeight.bold),
-              backgroundColor: color,
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-            ),
-            onPressed: () {},
-            child: const Text('LOGIN'),
+        child: TextButton(
+          style: TextButton.styleFrom(
+            textStyle: TextStyle(
+                fontSize: 20, color: textColor, fontWeight: FontWeight.bold),
+            backgroundColor: color,
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+          ),
+          onPressed: () {
+            press();
+          },
+          child: Text(this.text),
         ),
       ),
     );

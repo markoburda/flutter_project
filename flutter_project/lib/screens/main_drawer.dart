@@ -41,14 +41,9 @@ class MainDrawer extends StatelessWidget {
               style: TextStyle(fontSize: 20),
             ),
             onTap: () {
-                Navigator.push(
-                  context, 
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return OrderScreen();
-                    },
-                  ));
-          }
+              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed(OrderScreen.routeName);
+            },
           ),
           ListTile(
             leading: Icon(Icons.add),

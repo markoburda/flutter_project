@@ -6,8 +6,10 @@ class InputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
   final ValueChanged<String> onChanged;
+  final TextEditingController controller;
   const InputField({
     Key? key,
+    required this.controller,
     required this.hintText,
     this.icon = Icons.person,
     required this.onChanged,
@@ -17,6 +19,7 @@ class InputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextField(
+        controller: this.controller,
         onChanged: onChanged,
         cursorColor: kDarkGrayColor,
         decoration: InputDecoration(

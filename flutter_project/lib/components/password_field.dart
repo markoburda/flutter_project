@@ -4,15 +4,19 @@ import 'package:flutter_project/constants.dart';
 
 class PasswordField extends StatelessWidget {
   final ValueChanged<String> onChanged;
+  final TextEditingController controller;
+
   const PasswordField({
     Key? key,
     required this.onChanged,
+    required this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextField(
+        controller: this.controller,
         obscureText: true,
         onChanged: onChanged,
         cursorColor: kDarkGrayColor,

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "269121982794",
+    "project_id": "delivery-io-221f1",
+    "storage_bucket": "delivery-io-221f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269121982794:android:c3f88e90c1d1c0df5af1b3",
+        "android_client_info": {
+          "package_name": "ua.edu.ucu.deliveryio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269121982794-jo6dtl6bu7ah58ocom46a6a7ll1vgsfe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ua.edu.ucu.deliveryio",
+            "certificate_hash": "05130a0b3f47ab2763b8f84fb7d1d49ac1a7799c"
+          }
+        },
+        {
+          "client_id": "269121982794-9o6693ks389kb978cgvmge73a6enga34.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKKGo8M1vuvxQdrPXR0AOASSCyVgdXQWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "269121982794-9o6693ks389kb978cgvmge73a6enga34.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

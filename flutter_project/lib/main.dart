@@ -3,14 +3,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter_project/constants.dart';
-import 'package:flutter_project/screens/orders-screen.dart';
+import 'package:flutter_project/screens/add_order_screen.dart';
+import 'package:flutter_project/screens/my_orders.dart';
 import 'package:flutter_project/screens/profile_screen.dart';
-import 'package:flutter_project/screens/sign_up_screen.dart';
-
 import 'package:flutter_project/widgets/auth_service.dart';
 import 'package:flutter_project/widgets/auth_wrapper.dart';
 
 import 'package:flutter_project/screens/login-page.dart';
+import 'package:flutter_project/screens/sign_up_screen.dart';
+
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
           routes: {
             '/signup': (context) => SignUpScreen(),
             '/profile': (context) => ProfileScreen(),
-            '/myorders': (context) => OrderScreen()
+            '/myorders': (context) => MyOrders(),
+            '/addorder': (context) => AddOrder()
           },
           debugShowCheckedModeBanner: false,
           title: 'Delivery io',

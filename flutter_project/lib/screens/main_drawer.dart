@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project/screens/orders-screen.dart';
+import 'package:flutter_project/screens/add_order_screen.dart';
+import 'package:flutter_project/screens/my_orders.dart';
 import 'package:flutter_project/screens/profile_screen.dart';
 import 'package:flutter_project/widgets/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +43,7 @@ class MainDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).pushNamed(OrderScreen.routeName);
+              Navigator.of(context).pushNamed(MyOrders.routeName);
             },
           ),
           ListTile(
@@ -53,7 +54,7 @@ class MainDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).pushNamed(ProfileScreen.routeName);
+              Navigator.of(context).pushNamed(AddOrder.routeName);
             },
           ),
           ListTile(

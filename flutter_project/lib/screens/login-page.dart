@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/components/input_field.dart';
 import 'package:flutter_project/components/password_field.dart';
-import 'package:flutter_project/components/login-button.dart';
+import 'package:flutter_project/components/login_button.dart';
 import 'package:flutter_project/screens/sign_up_screen.dart';
 import 'package:flutter_project/widgets/auth_service.dart';
 import 'package:provider/provider.dart';

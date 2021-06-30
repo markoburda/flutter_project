@@ -11,6 +11,7 @@ import 'package:flutter_project/widgets/auth_wrapper.dart';
 
 import 'package:flutter_project/screens/login-page.dart';
 import 'package:flutter_project/screens/sign_up_screen.dart';
+import 'package:flutter_project/widgets/shipment_history.dart';
 
 import 'package:provider/provider.dart';
 
@@ -35,11 +36,17 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
-          routes: {
-            '/signup': (context) => SignUpScreen(),
-            '/myorders': (context) => MyOrders(),
-            '/addorder': (context) => AddOrder(),
-            '/order': (context) => DetailedOrder()
+          onGenerateRoute: (RouteSettings settings) {
+            var routes = <String, WidgetBuilder>{
+              '/signup': (context) => SignUpScreen(),
+              '/myorders': (context) => MyOrders(),
+              '/addorder': (context) => AddOrder(),
+              '/order': (context) => DetailedOrder(settings.arguments),
+              '/shipmentHistory': (context) =>
+                  ShipmentHistory(settings.arguments)
+            };
+            WidgetBuilder builder = routes[settings.name]!;
+            return MaterialPageRoute(builder: (ctx) => builder(ctx));
           },
           debugShowCheckedModeBanner: false,
           title: 'Delivery io',

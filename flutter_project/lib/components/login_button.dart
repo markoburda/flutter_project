@@ -24,14 +24,20 @@ class LoginButton extends StatelessWidget {
         child: TextButton(
           style: TextButton.styleFrom(
             textStyle: TextStyle(
-                fontSize: 20, color: textColor, fontWeight: FontWeight.bold),
+                fontSize: 20,
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                decorationColor: null),
             backgroundColor: color,
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
           ),
           onPressed: () {
             press();
           },
-          child: Text(this.text),
+          child: Text(
+            this.text,
+            style: TextStyle(color: kPrimaryLightColor),
+          ),
         ),
       ),
     );

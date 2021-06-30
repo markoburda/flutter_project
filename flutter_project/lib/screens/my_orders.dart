@@ -56,17 +56,18 @@ class _MyOrdersState extends State<MyOrders> {
               .where("user_id", isEqualTo: context.read<User?>()?.uid)
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            return ListView.builder(
+            var ordersList = ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
                       Navigator.of(context).pushNamed('/order', arguments: {
                         'item_name': snapshot.data?.docs[index]['item_name'],
                         'imageUrl': snapshot.data?.docs[index]['imageUrl'],
+                        'carrier': snapshot.data?.docs[index]['carrier'],
                         'tracknum': snapshot.data?.docs[index]['tracknum']
                       });
                     },
-                    key: Key(snapshot.data?.docs[index]['item_name']),
+                    key: Key(snapshot.data!.docs[index]['item_name']),
                     child: Card(
                       child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -111,6 +112,11 @@ class _MyOrdersState extends State<MyOrders> {
                   );
                 },
                 itemCount: snapshot.data?.docs.length);
+            if (snapshot.hasData) {
+              return ordersList;
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
           },
         ));
   }

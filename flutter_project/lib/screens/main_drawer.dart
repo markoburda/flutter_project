@@ -63,8 +63,9 @@ class MainDrawer extends StatelessWidget {
               style: TextStyle(fontSize: 20),
             ),
             onTap: () {
-              context.read<AuthenticationService>().signOut();
               Navigator.of(context).pop();
+
+              context.read<AuthenticationService>().signOut();
             },
           )
         ],

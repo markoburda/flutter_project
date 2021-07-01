@@ -19,16 +19,16 @@ class PasswordField extends StatelessWidget {
         controller: this.controller,
         obscureText: true,
         onChanged: onChanged,
-        cursorColor: kDarkGrayColor,
+        cursorColor: kPrimaryColor,
         decoration: InputDecoration(
           hintText: "Password",
           icon: Icon(
             Icons.lock,
-            color: kDarkGrayColor,
+            color: kPrimaryColor,
           ),
           suffixIcon: Icon(
             Icons.visibility,
-            color: kDarkGrayColor,
+            color: kPrimaryColor,
           ),
           border: InputBorder.none,
         ),

@@ -25,6 +25,7 @@ class _AddOrderState extends State<AddOrder> {
   String? carrier;
   String imageUrl = "";
   String tracknum = "";
+  String orderTotal = "";
 
   createOrder() {
     DocumentReference documentReference =
@@ -32,39 +33,54 @@ class _AddOrderState extends State<AddOrder> {
     Map<String, String?> orders = {
       "user_id": context.read<User?>()?.uid,
       "item_name": item_name,
-      "status": null,
+      "status": "Unknown",
       "carrier": slugs[carrier],
       "imageUrl": imageUrl,
-      "tracknum": tracknum
+      "tracknum": tracknum,
+      "orderTotal": orderTotal
     };
-    documentReference.set(orders).whenComplete(() {
-      print("OK");
-    });
+    documentReference.set(orders).whenComplete(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("Add Order")),
-        body: Column(
+        body: SingleChildScrollView(
+            child: Column(
           children: [
             TextField(
                 onChanged: (String val) {
                   item_name = val;
                 },
-                decoration: InputDecoration(hintText: 'Item name')),
+                decoration: InputDecoration(
+                    hintText: 'Item name',
+                    contentPadding: EdgeInsets.only(left: 10))),
             TextField(
                 onChanged: (String val) {
                   imageUrl = val;
                 },
-                decoration: InputDecoration(hintText: 'Image url')),
+                decoration: InputDecoration(
+                    hintText: 'Image url',
+                    contentPadding: EdgeInsets.only(left: 10))),
+            TextField(
+                onChanged: (String val) {
+                  orderTotal = val;
+                },
+                decoration: InputDecoration(
+                    hintText: 'Price',
+                    contentPadding: EdgeInsets.only(left: 10))),
             TextField(
                 onChanged: (String val) {
                   tracknum = val;
                 },
-                decoration: InputDecoration(hintText: 'Tracking number')),
+                decoration: InputDecoration(
+                    hintText: 'Tracking number',
+                    contentPadding: EdgeInsets.only(left: 10))),
             DropdownButtonFormField(
-                decoration: InputDecoration(labelText: 'Carrier'),
+                decoration: InputDecoration(
+                    labelText: 'Carrier',
+                    contentPadding: EdgeInsets.only(left: 10)),
                 isExpanded: true,
                 value: carrier,
                 onChanged: (value) {
@@ -83,6 +99,6 @@ class _AddOrderState extends State<AddOrder> {
               text: "Add order",
             )
           ],
-        ));
+        )));
   }
 }

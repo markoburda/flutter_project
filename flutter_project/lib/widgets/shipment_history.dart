@@ -53,7 +53,7 @@ class ShipmentHistory extends StatelessWidget {
                     child: Text(
                       dateString,
                       style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                            color: Theme.of(context).primaryColor,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                     ),
@@ -81,7 +81,6 @@ class ShipmentHistory extends StatelessWidget {
             child: Text(
               DateFormat("hh:mm a").format(date),
               style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                    // color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
             ),
@@ -101,8 +100,7 @@ class ShipmentHistory extends StatelessWidget {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: Container(
         decoration: BoxDecoration(
-          color: kDarkGrayColor,
-          //gradient: LinearGradient(colors: [Colors.green, Colors.teal]),
+          color: kPrimaryColor,
         ),
         child: Row(
           children: <Widget>[
@@ -146,20 +144,20 @@ class ShipmentHistory extends StatelessWidget {
             flex: 1,
             child: Container(
               width: 2,
-              color: Theme.of(context).accentColor,
+              color: kPrimaryColor,
             ),
           ),
           Container(
             width: 6,
             height: 6,
-            decoration: BoxDecoration(
-                color: Theme.of(context).accentColor, shape: BoxShape.circle),
+            decoration:
+                BoxDecoration(color: kPrimaryColor, shape: BoxShape.circle),
           ),
           Expanded(
             flex: 1,
             child: Container(
               width: 2,
-              color: Theme.of(context).accentColor,
+              color: kPrimaryColor,
             ),
           ),
         ],

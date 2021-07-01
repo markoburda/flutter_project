@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/constants.dart';
 import 'package:flutter_project/screens/main_drawer.dart';
 import 'package:flutter_project/widgets/shipment_history.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 var client = http.Client();
+TextStyle boldStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 18);
+TextStyle normalStyle = TextStyle(fontSize: 18);
 
 Future<OrderDetails> fetchOrderDetails(
     http.Client client, String carrier, String tracknum) async {
@@ -86,6 +89,13 @@ class DetailedOrder extends StatefulWidget {
 class _DetailedOrderState extends State<DetailedOrder> {
   late Future<OrderDetails> futureOrderDetails;
 
+  deleteOrder(item) {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("Orders").doc(item);
+
+    documentReference.delete().whenComplete(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -97,7 +107,22 @@ class _DetailedOrderState extends State<DetailedOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("${widget.order['item_name']}")),
+        backgroundColor: kDarkGrayColor,
+        appBar: AppBar(
+          title: Text("${widget.order['item_name']}"),
+          actions: [
+            InkWell(
+              child: Container(
+                child: Icon(Icons.delete),
+                padding: EdgeInsets.only(right: 10),
+              ),
+              onTap: () {
+                deleteOrder(widget.order['item_name']);
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ),
         body: DefaultTextStyle(
             style: Theme.of(context).textTheme.headline2!,
             textAlign: TextAlign.center,
@@ -105,127 +130,187 @@ class _DetailedOrderState extends State<DetailedOrder> {
                 future: futureOrderDetails,
                 builder: (BuildContext context,
                     AsyncSnapshot<OrderDetails> snapshot) {
-                  List<Widget> children;
-                  children = <Widget>[
-                    Center(
-                        child: Container(
+                  DocumentReference documentReference = FirebaseFirestore
+                      .instance
+                      .collection("Orders")
+                      .doc(widget.order['item_name']);
+                  documentReference.update({
+                    'status': snapshot.data?.delivery_state ?? 'Unknown'
+                  }).whenComplete(() {});
+
+                  List<Map<String, String>> details = [
+                    {
+                      'label': 'Order total: ',
+                      'data': snapshot.data?.delivery_state ?? 'Unknown',
+                    },
+                    {
+                      'label': 'Origin contry: ',
+                      'data': snapshot.data?.origin_country ?? 'Unknown',
+                    },
+                    {
+                      'label': 'Destination country: ',
+                      'data': snapshot.data?.destination_country ?? 'Unknown',
+                    },
+                    {
+                      'label': 'Carrier: ',
+                      'data': snapshot.data?.slug ?? 'Unknown',
+                    },
+                    {
+                      'label': 'Tracking number: ',
+                      'data': snapshot.data?.tracking_number ?? 'Unknown',
+                    },
+                  ];
+                  var cardList = ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: details.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          color: kBlackColor,
+                          child: Container(
+                            height: 50,
+                            alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 10),
-                            width: 125,
-                            height: 125,
-                            child: CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(widget.order['imageUrl'])))),
-                    Text(
-                      widget.order['item_name'],
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                    ),
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 50, horizontal: 10),
-                        child: Column(children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Tracking state:',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                              Text(
-                                snapshot.data?.delivery_state ?? 'state',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Origin country:',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                              Text(
-                                snapshot.data?.origin_country ?? 'origin',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Destination  country:',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                              Text(
-                                snapshot.data?.destination_country ?? 'dest',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Carrier:',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                              Text(
-                                snapshot.data?.slug ?? 'slug',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'Tracking number:',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
-                              Text(
-                                '${widget.order['tracknum']}',
-                                style: TextStyle(
-                                  fontSize: 15,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      details[index]['label']!,
+                                      style: boldStyle,
+                                    ),
+                                    Text(
+                                      details[index]['data']!,
+                                      style: normalStyle,
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          Row(
-                            children: [
-                              InkWell(
-                                  child: Text(
-                                    'View shipment history',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
+                        );
+                      });
+                  List<Widget> children;
+                  children = <Widget>[
+                    Container(
+                        child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                              alignment: Alignment.center,
+                              child: ColorFiltered(
+                                colorFilter: ColorFilter.mode(
+                                    Colors.black.withOpacity(0.25),
+                                    BlendMode.dstATop),
+                                child: Image.network(
+                                  widget.order['imageUrl'],
+                                  height: 200,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              )),
+                          Center(
+                              child: Container(
+                            height: 200,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              // alignment: Alignment.center,
+                              children: <Widget>[
+                                Text(
+                                  widget.order['item_name'],
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22.0),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'STATUS: ',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 22),
+                                    ),
+                                    Text(
+                                      snapshot.data?.delivery_state
+                                              .toUpperCase() ??
+                                          'UNKNOWN',
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                          color: delivery_state[snapshot
+                                                  .data?.delivery_state
+                                                  .toUpperCase() ??
+                                              'UNKNOWN']),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ))
+                        ],
+                      ),
+                    )),
+                    Column(
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 10),
+                            child: DefaultTextStyle(
+                                style: TextStyle(
+                                  color: kLightGrayColor,
+                                ),
+                                child: cardList)),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/shipmentHistory',
+                                arguments: {
+                                  'checkpoints': snapshot.data?.checkpoints
+                                });
+                          },
+                          child: Card(
+                            color: kPrimaryColor,
+                            child: Container(
+                              height: 50,
+                              alignment: Alignment.center,
+                              width: MediaQuery.of(context).size.width - 25,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Row(
+                                    children: [
+                                      Text('Shipment history',
+                                          style: boldStyle),
+                                    ],
                                   ),
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed(
-                                        '/shipmentHistory',
-                                        arguments: {
-                                          'checkpoints':
-                                              snapshot.data?.checkpoints
-                                        });
-                                  }),
-                            ],
-                          )
-                        ]))
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ];
                   if (snapshot.hasData) {
                     return Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: children,
                       ),
                     );
                   } else if (snapshot.hasError) {
                     return Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: children,
                       ),
                     );

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_project/components/input_field.dart';
+import 'package:flutter_project/constants.dart';
 import 'package:flutter_project/screens/main_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -18,36 +19,37 @@ class MyOrders extends StatefulWidget {
   _MyOrdersState createState() => _MyOrdersState();
 }
 
-Future<OrderDetails> fetchAlbum(http.Client client) async {
-  final response = await http.get(
-    Uri.parse('https://api.aftership.com/v4/trackings?page=1&limit=100'),
-    headers: {
-      'Accept': 'application/json',
-      'aftership-api-key': 'a6d6bd00-ab18-4cb0-9283-69857ae60b97',
-      'Content-Type': 'application/json'
-    },
-  );
-  final responseJson = jsonDecode(response.body);
+// Future<OrderDetails> fetchAlbum(http.Client client) async {
+//   final response = await http.get(
+//     Uri.parse('https://api.aftership.com/v4/trackings?page=1&limit=100'),
+//     headers: {
+//       'Accept': 'application/json',
+//       'aftership-api-key': 'a6d6bd00-ab18-4cb0-9283-69857ae60b97',
+//       'Content-Type': 'application/json'
+//     },
+//   );
+//   final responseJson = jsonDecode(response.body);
 
-  return OrderDetails.fromJson(responseJson);
-}
+//   return OrderDetails.fromJson(responseJson);
+// }
 
-class OrderDetails {
-  final String data;
+// class OrderDetails {
+//   final String data;
 
-  OrderDetails({
-    required this.data,
-  });
+//   OrderDetails({
+//     required this.data,
+//   });
 
-  factory OrderDetails.fromJson(Map<String, dynamic> json) {
-    return OrderDetails(data: json["meta"]["type"]);
-  }
-}
+//   factory OrderDetails.fromJson(Map<String, dynamic> json) {
+//     return OrderDetails(data: json["meta"]["type"]);
+//   }
+// }
 
 class _MyOrdersState extends State<MyOrders> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: kDarkGrayColor,
         drawer: MainDrawer(),
         appBar: AppBar(title: Text("My Orders")),
         body: StreamBuilder(
@@ -69,42 +71,71 @@ class _MyOrdersState extends State<MyOrders> {
                     },
                     key: Key(snapshot.data!.docs[index]['item_name']),
                     child: Card(
+                      color: kDarkGrayColor,
                       child: Container(
                           width: MediaQuery.of(context).size.width,
                           padding: EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      width: 55,
-                                      height: 55,
-                                      child: CircleAvatar(
-                                          backgroundImage: NetworkImage(snapshot
-                                              .data?.docs[index]['imageUrl']))),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        snapshot.data?.docs[index]['item_name'],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
-                                      ),
-                                      Text(
-                                        'STATUS',
-                                      )
-                                    ],
-                                  )
-                                ],
+                              Container(
+                                width: MediaQuery.of(context).size.width - 30,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                        child: Row(
+                                      children: [
+                                        Container(
+                                            width: 55,
+                                            height: 55,
+                                            child: CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    snapshot.data?.docs[index]
+                                                        ['imageUrl']))),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Container(
+                                          height: 55,
+                                          padding: EdgeInsets.only(left: 10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                snapshot.data?.docs[index]
+                                                    ['item_name'],
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18),
+                                              ),
+                                              Text(
+                                                snapshot.data?.docs[index]
+                                                    ['orderTotal'],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                                    Icon(
+                                      state_icons[snapshot
+                                          .data?.docs[index]['status']
+                                          .toString()
+                                          .toUpperCase()],
+                                      color: delivery_state[snapshot
+                                          .data?.docs[index]['status']
+                                          .toString()
+                                          .toUpperCase()],
+                                    ),
+                                  ],
+                                ),
                               )
                             ],
                           )),

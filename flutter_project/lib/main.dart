@@ -51,8 +51,8 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Delivery io',
           theme: ThemeData(
+            brightness: Brightness.dark,
             primaryColor: kPrimaryColor,
-            scaffoldBackgroundColor: Colors.white,
           ),
           home: AuthenticationWrapper(),
         ));

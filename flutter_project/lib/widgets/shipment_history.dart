@@ -5,7 +5,7 @@ import 'package:country_code/country_code.dart';
 import 'package:emoji_flag_converter/emoji_flag_converter.dart';
 
 class ShipmentHistory extends StatelessWidget {
-  late List checkpoints;
+  late List? checkpoints;
 
   ShipmentHistory(Object? args) {
     Map tempMap = args as Map;
@@ -14,9 +14,18 @@ class ShipmentHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text("Shipment history")),
-        body: buildListView(checkpoints));
+    if (checkpoints != null) {
+      return Scaffold(
+          appBar: AppBar(title: Text("Shipment history")),
+          body: buildListView(checkpoints));
+    } else {
+      return Scaffold(
+          appBar: AppBar(title: Text("Shipment history")),
+          body: Center(
+            child: Text(
+                "There is an error with this order!\nProbably tracking number is wrong!"),
+          ));
+    }
   }
 
   ListView buildListView(checkpoints) {

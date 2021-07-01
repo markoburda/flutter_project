@@ -47,58 +47,64 @@ class _AddOrderState extends State<AddOrder> {
     return Scaffold(
         appBar: AppBar(title: Text("Add Order")),
         body: SingleChildScrollView(
-            child: Column(
-          children: [
-            TextField(
-                onChanged: (String val) {
-                  item_name = val;
-                },
-                decoration: InputDecoration(
-                    hintText: 'Item name',
-                    contentPadding: EdgeInsets.only(left: 10))),
-            TextField(
-                onChanged: (String val) {
-                  imageUrl = val;
-                },
-                decoration: InputDecoration(
-                    hintText: 'Image url',
-                    contentPadding: EdgeInsets.only(left: 10))),
-            TextField(
-                onChanged: (String val) {
-                  orderTotal = val;
-                },
-                decoration: InputDecoration(
-                    hintText: 'Price',
-                    contentPadding: EdgeInsets.only(left: 10))),
-            TextField(
-                onChanged: (String val) {
-                  tracknum = val;
-                },
-                decoration: InputDecoration(
-                    hintText: 'Tracking number',
-                    contentPadding: EdgeInsets.only(left: 10))),
-            DropdownButtonFormField(
-                decoration: InputDecoration(
-                    labelText: 'Carrier',
-                    contentPadding: EdgeInsets.only(left: 10)),
-                isExpanded: true,
-                value: carrier,
-                onChanged: (value) {
-                  setState(() {
-                    carrier = value.toString();
-                  });
-                },
-                items: carriers.map((item) {
-                  return DropdownMenuItem(value: item, child: Text(item));
-                }).toList()),
-            LoginButton(
-              press: () {
-                createOrder();
-                Navigator.of(context).pop();
-              },
-              text: "Add order",
-            )
-          ],
-        )));
+            child: Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.2),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextField(
+                        onChanged: (String val) {
+                          item_name = val;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Item name',
+                            contentPadding: EdgeInsets.only(left: 10))),
+                    TextField(
+                        onChanged: (String val) {
+                          imageUrl = val;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Image url',
+                            contentPadding: EdgeInsets.only(left: 10))),
+                    TextField(
+                        onChanged: (String val) {
+                          orderTotal = val;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Price',
+                            contentPadding: EdgeInsets.only(left: 10))),
+                    TextField(
+                        onChanged: (String val) {
+                          tracknum = val;
+                        },
+                        decoration: InputDecoration(
+                            hintText: 'Tracking number',
+                            contentPadding: EdgeInsets.only(left: 10))),
+                    DropdownButtonFormField(
+                        decoration: InputDecoration(
+                            labelText: 'Carrier',
+                            contentPadding: EdgeInsets.only(left: 10)),
+                        isExpanded: true,
+                        value: carrier,
+                        onChanged: (value) {
+                          setState(() {
+                            carrier = value.toString();
+                          });
+                        },
+                        items: carriers.map((item) {
+                          return DropdownMenuItem(
+                              value: item, child: Text(item));
+                        }).toList()),
+                    LoginButton(
+                      press: () {
+                        createOrder();
+                        Navigator.of(context).pop();
+                      },
+                      text: "Add order",
+                    )
+                  ],
+                ))));
   }
 }

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/constants.dart';
-import 'package:flutter_project/screens/main_drawer.dart';
-import 'package:flutter_project/widgets/shipment_history.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 var client = http.Client();
 TextStyle boldStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 18);
@@ -18,8 +15,8 @@ Future<OrderDetails> fetchOrderDetails(
     Uri.parse('https://api.aftership.com/v4/trackings/$carrier/$tracknum'),
     headers: {
       'Accept': 'application/json',
-      //  'aftership-api-key': '980e9270-c4e3-4847-9bbe-5e44ab449029',
-      'aftership-api-key': '16a597e2-6273-4e81-98b2-f9f5db9e9f23',
+      'aftership-api-key': '980e9270-c4e3-4847-9bbe-5e44ab449029',
+      //'aftership-api-key': '16a597e2-6273-4e81-98b2-f9f5db9e9f23',
       'Content-Type': 'application/json'
     },
   );
@@ -48,7 +45,6 @@ class OrderDetails {
       required this.checkpoints});
 
   factory OrderDetails.fromJson(Map<String, dynamic> json) {
-    print(json["data"]["tracking"]["slug"]);
     if (json["data"].containsKey("tracking")) {
       return OrderDetails(
           origin_country: json["data"]["tracking"]["origin_country_iso3"],
@@ -89,17 +85,43 @@ class DetailedOrder extends StatefulWidget {
 class _DetailedOrderState extends State<DetailedOrder> {
   late Future<OrderDetails> futureOrderDetails;
 
-  deleteOrder(item) {
+  _deleteOrder(item) {
     DocumentReference documentReference =
         FirebaseFirestore.instance.collection("Orders").doc(item);
 
     documentReference.delete().whenComplete(() {});
   }
 
+  void _showDialog(context, item) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: new Text("Are you sure you want to delete this order?"),
+          actions: <Widget>[
+            TextButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: new Text("Delete"),
+              onPressed: () {
+                _deleteOrder(item);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-
     futureOrderDetails = fetchOrderDetails(
         client, widget.order['carrier'], widget.order['tracknum']);
   }
@@ -117,8 +139,7 @@ class _DetailedOrderState extends State<DetailedOrder> {
                 padding: EdgeInsets.only(right: 10),
               ),
               onTap: () {
-                deleteOrder(widget.order['item_name']);
-                Navigator.of(context).pop();
+                _showDialog(context, widget.order['item_name']);
               },
             )
           ],
@@ -208,12 +229,14 @@ class _DetailedOrderState extends State<DetailedOrder> {
                                 colorFilter: ColorFilter.mode(
                                     Colors.black.withOpacity(0.25),
                                     BlendMode.dstATop),
-                                child: Image.network(
-                                  widget.order['imageUrl'],
-                                  height: 200,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: widget.order['imageUrl'] != ""
+                                    ? Image.network(
+                                        widget.order['imageUrl'],
+                                        height: 200,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Container(),
                               )),
                           Center(
                               child: Container(

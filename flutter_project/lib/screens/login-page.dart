@@ -18,12 +18,8 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image(
-              image: AssetImage('assets/images/logo_icon.jpg'),
+              image: AssetImage('assets/images/logo_icon.png'),
               height: 100,
-            ),
-            Text(
-              "Deliver.io",
-              style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: size.height * 0.03),
             InputField(

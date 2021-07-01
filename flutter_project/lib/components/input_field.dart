@@ -21,11 +21,11 @@ class InputField extends StatelessWidget {
       child: TextField(
         controller: this.controller,
         onChanged: onChanged,
-        cursorColor: kDarkGrayColor,
+        cursorColor: kPrimaryColor,
         decoration: InputDecoration(
           icon: Icon(
             icon,
-            color: kDarkGrayColor,
+            color: kPrimaryColor,
           ),
           hintText: hintText,
           border: InputBorder.none,

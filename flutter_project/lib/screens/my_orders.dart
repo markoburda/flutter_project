@@ -38,7 +38,10 @@ class _MyOrdersState extends State<MyOrders> {
                         'imageUrl':
                             snapshot.data?.docs[index]['imageUrl'] ?? "",
                         'carrier': snapshot.data?.docs[index]['carrier'] ?? "",
-                        'tracknum': snapshot.data?.docs[index]['tracknum'] ?? ""
+                        'tracknum':
+                            snapshot.data?.docs[index]['tracknum'] ?? "",
+                        'orderTotal':
+                            snapshot.data?.docs[index]['orderTotal'] ?? ""
                       });
                     },
                     key: Key(snapshot.data!.docs[index]['item_name']),

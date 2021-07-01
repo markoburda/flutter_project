@@ -16,7 +16,7 @@ Future<OrderDetails> fetchOrderDetails(
     headers: {
       'Accept': 'application/json',
       'aftership-api-key': '980e9270-c4e3-4847-9bbe-5e44ab449029',
-      //'aftership-api-key': '16a597e2-6273-4e81-98b2-f9f5db9e9f23',
+      //'aftership-api-key': 'd07190df-65f0-4c6a-95ca-1c7ebbd27058',
       'Content-Type': 'application/json'
     },
   );
@@ -162,7 +162,7 @@ class _DetailedOrderState extends State<DetailedOrder> {
                   List<Map<String, String>> details = [
                     {
                       'label': 'Order total: ',
-                      'data': snapshot.data?.delivery_state ?? 'Unknown',
+                      'data': widget.order['orderTotal'] ?? 'Unknown',
                     },
                     {
                       'label': 'Origin contry: ',
